@@ -132,7 +132,11 @@ type PermissionCheckRequestMetadata struct {
 	// Token associated with the snap.
 	SnapToken string `protobuf:"bytes,2,opt,name=snap_token,proto3" json:"snap_token,omitempty"`
 	// Depth of the check, must be greater than or equal to 3.
-	Depth         int32 `protobuf:"varint,3,opt,name=depth,proto3" json:"depth,omitempty"`
+	Depth int32 `protobuf:"varint,3,opt,name=depth,proto3" json:"depth,omitempty"`
+	// Path for coverage tracking of permission evaluation.
+	CoveragePath string `protobuf:"bytes,4,opt,name=coverage_path,proto3" json:"coverage_path,omitempty"`
+	// Path of the exclusion, used for coverage tracking.
+	ExclusionPath string `protobuf:"bytes,5,opt,name=exclusion_path,proto3" json:"exclusion_path,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -186,6 +190,20 @@ func (x *PermissionCheckRequestMetadata) GetDepth() int32 {
 		return x.Depth
 	}
 	return 0
+}
+
+func (x *PermissionCheckRequestMetadata) GetCoveragePath() string {
+	if x != nil {
+		return x.CoveragePath
+	}
+	return ""
+}
+
+func (x *PermissionCheckRequestMetadata) GetExclusionPath() string {
+	if x != nil {
+		return x.ExclusionPath
+	}
+	return ""
 }
 
 // PermissionCheckResponse is the response message for the Check method in the Permission service.
@@ -3908,13 +3926,15 @@ const file_base_v1_service_proto_rawDesc = "" +
 	"permission\x124\n" +
 	"\asubject\x18\x05 \x01(\v2\x10.base.v1.SubjectB\b\xfaB\x05\x8a\x01\x02\x10\x01R\asubject\x12\xc4\x01\n" +
 	"\acontext\x18\x06 \x01(\v2\x10.base.v1.ContextB\x97\x01\x92A\x93\x012\x90\x01Contextual data that can be dynamically added to permission check requests. See details on [Contextual Data](../../operations/contextual-tuples)R\acontext\x12/\n" +
-	"\targuments\x18\a \x03(\v2\x11.base.v1.ArgumentR\targuments\"\xb2\x02\n" +
+	"\targuments\x18\a \x03(\v2\x11.base.v1.ArgumentR\targuments\"\x80\x03\n" +
 	"\x1ePermissionCheckRequestMetadata\x12&\n" +
 	"\x0eschema_version\x18\x01 \x01(\tR\x0eschema_version\x12\x89\x01\n" +
 	"\n" +
 	"snap_token\x18\x02 \x01(\tBi\x92Af2dThe snap token to avoid stale cache, see more details on [Snap Tokens](../../operations/snap-tokens)R\n" +
 	"snap_token\x12\\\n" +
-	"\x05depth\x18\x03 \x01(\x05BF\x92A<2:Query limit when if recursive database queries got in loop\xfaB\x04\x1a\x02(\x03R\x05depth\"\x87\x01\n" +
+	"\x05depth\x18\x03 \x01(\x05BF\x92A<2:Query limit when if recursive database queries got in loop\xfaB\x04\x1a\x02(\x03R\x05depth\x12$\n" +
+	"\rcoverage_path\x18\x04 \x01(\tR\rcoverage_path\x12&\n" +
+	"\x0eexclusion_path\x18\x05 \x01(\tR\x0eexclusion_path\"\x87\x01\n" +
 	"\x17PermissionCheckResponse\x12&\n" +
 	"\x03can\x18\x01 \x01(\x0e2\x14.base.v1.CheckResultR\x03can\x12D\n" +
 	"\bmetadata\x18\x02 \x01(\v2(.base.v1.PermissionCheckResponseMetadataR\bmetadata\"C\n" +

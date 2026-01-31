@@ -279,6 +279,7 @@ func (t *Compiler) compileRewrite(entityName string, exp *ast.InfixExpression) (
 	rewrite.Children = ch
 	child.Type = &base.Child_Rewrite{Rewrite: rewrite}
 	child.GetRewrite().Children = ch
+
 	return child, nil
 }
 
@@ -355,6 +356,10 @@ func (t *Compiler) compileIdentifier(entityName string, ident *ast.Identifier) (
 
 			// Set the Type of the Child to the compiled Leaf
 			child.Type = &base.Child_Leaf{Leaf: leaf}
+			child.PositionInfo = &base.PositionInfo{
+				Line:   uint32(ident.Idents[0].PositionInfo.LinePosition),
+				Column: uint32(ident.Idents[0].PositionInfo.ColumnPosition),
+			}
 			return child, nil
 		} else { // The reference type is a user set
 			// Compile the identifier into a ComputedUserSetIdentifier
@@ -365,6 +370,10 @@ func (t *Compiler) compileIdentifier(entityName string, ident *ast.Identifier) (
 
 			// Set the Type of the Child to the compiled Leaf
 			child.Type = &base.Child_Leaf{Leaf: leaf}
+			child.PositionInfo = &base.PositionInfo{
+				Line:   uint32(ident.Idents[0].PositionInfo.LinePosition),
+				Column: uint32(ident.Idents[0].PositionInfo.ColumnPosition),
+			}
 			return child, nil
 		}
 	}
@@ -387,6 +396,10 @@ func (t *Compiler) compileIdentifier(entityName string, ident *ast.Identifier) (
 
 		// Set the Type of the Child to the compiled Leaf
 		child.Type = &base.Child_Leaf{Leaf: leaf}
+		child.PositionInfo = &base.PositionInfo{
+			Line:   uint32(ident.Idents[0].PositionInfo.LinePosition),
+			Column: uint32(ident.Idents[0].PositionInfo.ColumnPosition),
+		}
 		return child, nil
 	}
 
@@ -479,6 +492,10 @@ func (t *Compiler) compileCall(entityName string, call *ast.Call) (*base.Child, 
 			Arguments: arguments,
 		}},
 	}}
+	child.PositionInfo = &base.PositionInfo{
+		Line:   uint32(call.Name.PositionInfo.LinePosition),
+		Column: uint32(call.Name.PositionInfo.ColumnPosition),
+	}
 
 	// Return the compiled child and nil error to indicate success.
 	return child, nil

@@ -405,6 +405,10 @@ func (m *PermissionCheckRequestMetadata) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	// no validation rules for CoveragePath
+
+	// no validation rules for ExclusionPath
+
 	if len(errors) > 0 {
 		return PermissionCheckRequestMetadataMultiError(errors)
 	}

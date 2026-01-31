@@ -56,6 +56,8 @@ func (m *PermissionCheckRequestMetadata) CloneVT() *PermissionCheckRequestMetada
 	r.SchemaVersion = m.SchemaVersion
 	r.SnapToken = m.SnapToken
 	r.Depth = m.Depth
+	r.CoveragePath = m.CoveragePath
+	r.ExclusionPath = m.ExclusionPath
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -1409,6 +1411,12 @@ func (this *PermissionCheckRequestMetadata) EqualVT(that *PermissionCheckRequest
 		return false
 	}
 	if this.Depth != that.Depth {
+		return false
+	}
+	if this.CoveragePath != that.CoveragePath {
+		return false
+	}
+	if this.ExclusionPath != that.ExclusionPath {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
@@ -3276,6 +3284,20 @@ func (m *PermissionCheckRequestMetadata) MarshalToSizedBufferVT(dAtA []byte) (in
 	if m.unknownFields != nil {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.ExclusionPath) > 0 {
+		i -= len(m.ExclusionPath)
+		copy(dAtA[i:], m.ExclusionPath)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.ExclusionPath)))
+		i--
+		dAtA[i] = 0x2a
+	}
+	if len(m.CoveragePath) > 0 {
+		i -= len(m.CoveragePath)
+		copy(dAtA[i:], m.CoveragePath)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.CoveragePath)))
+		i--
+		dAtA[i] = 0x22
 	}
 	if m.Depth != 0 {
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Depth))
@@ -6719,6 +6741,14 @@ func (m *PermissionCheckRequestMetadata) SizeVT() (n int) {
 	if m.Depth != 0 {
 		n += 1 + protohelpers.SizeOfVarint(uint64(m.Depth))
 	}
+	l = len(m.CoveragePath)
+	if l > 0 {
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
+	l = len(m.ExclusionPath)
+	if l > 0 {
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
 	n += len(m.unknownFields)
 	return n
 }
@@ -8412,6 +8442,70 @@ func (m *PermissionCheckRequestMetadata) UnmarshalVT(dAtA []byte) error {
 					break
 				}
 			}
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CoveragePath", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.CoveragePath = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ExclusionPath", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ExclusionPath = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
