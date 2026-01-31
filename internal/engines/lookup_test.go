@@ -2160,7 +2160,7 @@ var _ = Describe("lookup-entity-engine", func() {
 						Metadata: &base.PermissionLookupEntityRequestMetadata{
 							SnapToken:     token.NewNoopToken().Encode().String(),
 							SchemaVersion: "",
-							Depth:         200, // High depth for multi-hop group/org traversal
+							Depth:         500, // High depth for multi-hop group/org traversal
 						},
 					})
 
@@ -2341,7 +2341,7 @@ var _ = Describe("lookup-entity-engine", func() {
 						Metadata: &base.PermissionLookupEntityRequestMetadata{
 							SnapToken:     token.NewNoopToken().Encode().String(),
 							SchemaVersion: "",
-							Depth:         200, // High depth for multi-hop group/org traversal with cycles
+							Depth:         500, // High depth for multi-hop group/org traversal with cycles
 						},
 					})
 

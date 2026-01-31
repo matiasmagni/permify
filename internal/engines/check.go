@@ -252,7 +252,8 @@ func (engine *CheckEngine) setChild(
 	functions := make([]CheckFunction, 0, len(children))
 	// Loop over each child node
 	for i, child := range children {
-		childCtx := coverage.ContextWithPath(ctx, coverage.AppendPath(coverage.PathFromContext(ctx), fmt.Sprintf("%d", i)))
+		// Use path.op.i to match discovery's structure (operator at path.op, operands at path.op.0, path.op.1)
+		childCtx := coverage.ContextWithPath(ctx, coverage.AppendPath(coverage.AppendPath(coverage.PathFromContext(ctx), "op"), fmt.Sprintf("%d", i)))
 		// Switch on the type of the child node
 		switch child.GetType().(type) {
 		// In case of a Rewrite node, create a CheckFunction for the Rewrite and append it
